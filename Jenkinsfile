@@ -6,7 +6,7 @@ pipeline {
         DOCKER_CREDENTIALS_ID = "dockerhub-creds"
         HELM_RELEASE_NAME = "calculator-release"
         HELM_CHART_NAME = "to-do-chart"
-        KUBE_CONTEXT = "/home/ubuntu/.kube/config"
+       // KUBE_CONTEXT = "/home/ubuntu/.kube/config"
     }
 
     triggers {
@@ -49,7 +49,7 @@ pipeline {
                         helm upgrade --install ${HELM_RELEASE_NAME} ./${HELM_CHART_NAME} \
                         --set image.repository=${DOCKER_IMAGE} \
                         --set image.tag=${env.BUILD_NUMBER} \
-                        --kube-context ${KUBE_CONTEXT}
+                        --kubeconfig /home/ubuntu/.kube/config
                     """
                 }
             }
