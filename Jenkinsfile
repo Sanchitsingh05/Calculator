@@ -54,17 +54,5 @@ pipeline {
                 }
             }
         }
-        stage('Deploy to Kubernetes (Blue)') {
-            steps {
-                script {
-                    sh """
-                       helm upgrade --install calculator-release ./to-do-chart \
-                       --set image.repository=${DOCKER_IMAGE} \
-                       --set image.tag=${env.BUILD_NUMBER} \
-                       --kube-context minikube
-                    """
-                   }
-              }
-        } 
     }
 }
