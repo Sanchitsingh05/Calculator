@@ -6,7 +6,7 @@ pipeline {
         DOCKER_CREDENTIALS_ID = "dockerhub-creds"
         HELM_RELEASE_NAME = "calculator-release"
         HELM_CHART_NAME = "to-do-chart"
-        KUBE_CONTEXT = "minikube"
+        KUBE_CONTEXT = "/home/ubuntu/.kube/config"
     }
 
     triggers {
