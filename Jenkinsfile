@@ -2,15 +2,11 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "kanupriya18/calculator-app"
+        DOCKER_IMAGE = "sanchit0305/calculator-app"
         DOCKER_CREDENTIALS_ID = "dockerhub-creds"
         HELM_RELEASE_NAME = "calculator-release"
         HELM_CHART_NAME = "to-do-chart"
         KUBE_CONTEXT = "minikube"
-        OPENSHIFT_HELM_RELEASE_NAME = "calculator-green"
-        OPENSHIFT_HELM_CHART_NAME = "calculator-chart-openshift"
-        JIRA_SITE = "your-jira-site"
-        JIRA_CREDENTIALS_ID = "jira-creds"
     }
 
     triggers {
@@ -70,25 +66,5 @@ pipeline {
                    }
               }
         } 
-        stage('Deploy to OpenShift (Green)') {
-            steps {
-                script {
-                    sh """
-                       helm upgrade --install ${OPENSHIFT_HELM_RELEASE_NAME} ./${OPENSHIFT_HELM_CHART_NAME} \
-                       --set image.repository=${DOCKER_IMAGE} \
-                       --set image.tag=${env.BUILD_NUMBER} \
-                       --kube-context openshift-sandbox \
-                       --namespace green --create-namespace
-                    """
-                 }
-             }
-        }
-
-        stage('Update Jira') {
-            steps {
-                jiraSendBuildInfo site: JIRA_SITE, buildNumber: env.BUILD_NUMBER
-                jiraSendDeploymentInfo site: JIRA_SITE, environmentId: 'production', environmentName: 'Production', deploymentState: 'successful'
-            }
-        }
     }
 }
